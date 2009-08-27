@@ -32,8 +32,6 @@ class ImageFilter_Filter_File_Image_Resize extends ImageFilter_Filter_File_Image
 	 */
 	protected function _resizeImage($orig_size, $options)
 	{
-		Zend_Registry::get('logger')->debug(print_r($options, true));
-
 		//maintain aspect ratio
 		if ($options['ratio'] == true)
 		{
@@ -43,10 +41,14 @@ class ImageFilter_Filter_File_Image_Resize extends ImageFilter_Filter_File_Image
 			$width = ($width > $options['width'] ? $options['width'] : $width);
 			$height = ($height > $options['height'] ? $options['height'] : $height);
 		}
+		else
+		{
+			//if size not set default to original dimension for image
+			$width = (intval($options['width']) > 0 ? intval($options['width'] : $orig_size['width']);
+			$height = (intval($options['height']) > 0 ? intval($options['height'] : $orig_size['height']);
+		}
 
 		$size = array('width' => (int) $width, 'height' => (int) $height);
-		Zend_Registry::get('logger')->debug(print_r($orig_size, true));
-		Zend_Registry::get('logger')->debug(print_r($size, true));
 		return $size;
 	}
 }
